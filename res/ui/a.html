@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python and HTML Interaction with Checkboxes</title>
+    <script>
+        // 发送复选框的布尔值到Python端
+        function sendCheckboxValuesToPython() {
+            var checkboxes = document.getElementsByName('number');
+            var values = {};
+
+            // 获取单选框的选中状态（有无间距）
+            var selectedOption = document.querySelector('input[name="UI"]:checked').value;
+            values["UI"] = selectedOption;
+
+            // 获取单选框的选中状态（星魂或升级）
+            var selectedOption2 = document.querySelector('input[name="choice"]:checked').value;
+            values["choice"] = selectedOption2;
+            
+            // 获取每个复选框的选中状态
+            for (var i = 0; i < checkboxes.length; i++) {
+                values[checkboxes[i].value] = checkboxes[i].checked;  // 键为复选框的值，值为布尔状态
+            }
+
+            // 获取升级次数，如果为空则使用默认值 20
+            var upgradeInput = document.getElementById('upgradeCount').value;
+            var upgradeCount = upgradeInput ? parseInt(upgradeInput) : 20;  // 如果没有输入则取默认值20
+            values["upgradeCount"] = upgradeCount;
+
+            // 将布尔值对象发送到Python端
+            window.airscript.call('values', JSON.stringify(values));  // 发送JSON对象字符串
+            alert(`Sent to Python: ${JSON.stringify(values)}`);  // 弹出提示框确认发送
+        }
+    </script>
+</head>
+<body>
+    <h1>请告知您的画面类型</h1>
+    <form>
+        <input type="radio" id="unpadding" name="UI" value="unpadding" checked>
+        <label for="unpadding">默认两侧无间距（大部分手机/全部模拟器）</label><br>
+
+        <input type="radio" id="padding" name="UI" value="padding">
+        <label for="padding">两侧有间距</label><br>
+    </form>
+
+    <h1>选择星魂或升级</h1>
+
+    <!-- 单选框选项：星魂和升级 -->
+    <form>
+        <input type="radio" id="soul" name="choice" value="soul" checked>
+        <label for="soul">星魂</label><br>
+
+        <input type="radio" id="upgrade" name="choice" value="upgrade">
+        <label for="upgrade">升级</label><br>
+
+        <input type="radio" id="dream" name="choice" value="dream">
+        <label for="dream">梦境</label><br>
+    </form>
+
+    <br>
+
+    <h1>选择要刷的星魂（默认全选）</h1>
+
+    <!-- 创建6个复选框，分别对应1到6 -->
+    <form>
+        <input type="checkbox" id="one" name="number" value="1" checked>
+        <label for="one">回音蟹（物防）</label><br>
+        
+        <input type="checkbox" id="two" name="number" value="2" checked>
+        <label for="two">游戏小熊（魔攻）</label><br>
+        
+        <input type="checkbox" id="three" name="number" value="3" checked>
+        <label for="three">浮水波尼（魔防）</label><br>
+        
+        <input type="checkbox" id="four" name="number" value="4" checked>
+        <label for="four">兔宝（速度）</label><br>
+        
+        <input type="checkbox" id="five" name="number" value="5" checked>
+        <label for="five">圣山之巅（物攻+体力）</label><br>
+        
+    </form>
+
+    <!-- 升级次数输入框，默认值为20 -->
+    <label for="upgradeCount">选择升级/星魂/梦境次数（一天四次满，可累加）（默认20）</label>
+    <input type="number" id="upgradeCount" placeholder="20">
+
+    <br><br>
+
+
+    <!-- 发送按钮 -->
+    <button onclick="sendCheckboxValuesToPython()">确认</button>
+
+</body>
+</html>
