@@ -1,3 +1,6 @@
+# 对于梦境，1920的尽量朝里面靠
+
+
 from ascript.android.system import R
 from ascript.android.screen import FindColors
 from ascript.android import action
@@ -7,28 +10,35 @@ from time import sleep
 import time
 
 rect = __import__(R.name+".main.utils.rect",fromlist=[''])
-rc = rect.rect_convert
+io = __import__(R.name+".main.utils.io",fromlist=[''])
+battle = __import__(R.name+".main.function.basic.battle",fromlist=[''])
+isSkill = __import__(R.name+".main.utils.isSkill",fromlist=[''])
+rc = rect.rc1920
+rc2 = rect.rc19202
 c = action.click
 
 display = Device.display()
 width = display.widthPixels
 height = display.heightPixels
 
+jn_click_list = [rc2(598,984), rc2(849,986), rc2(1075,984), rc2(1312,989), rc2(1665,936)]
+
 # 检索地图
-def start(times):
+def start(times,padding):
+    time.sleep(1)
     start = FindColors.find("1461,910,#8BE366|1611,910,#8AE165|1542,838,#F0ECE1|1535,623,#F3F0E8|1546,374,#F5F3EB",rect=rc(1109,105,1877,1034),diff=0.9,ori= 1)
     if start:
         print("已经在永恒梦境")
         c(start,100)
         sleep(3)
     else:
-        map_pos = FindColors.find("1695,982,#7B261E|1702,990,#F2CC71|1716,966,#3B3499|1742,986,#2AD635|1758,996,#E0B956",rect=[1384,880,1832,1061],diff=0.8,ori= 1)
+        map_pos = FindColors.find("1695,982,#7B261E|1702,990,#F2CC71|1716,966,#3B3499|1742,986,#2AD635|1758,996,#E0B956",rect=rc(1384,880,1832,1061),diff=0.8,ori= 1)
         while not map_pos:
-            print("未检索到呼噜猫旅店")
-            map_pos = FindColors.find("1695,982,#7B261E|1702,990,#F2CC71|1716,966,#3B3499|1742,986,#2AD635|1758,996,#E0B956",rect=[1384,880,1832,1061],diff=0.8,ori= 1)
+            print("检索地图暂未适配所有机型，请到梦境界面开启脚本（开始梦境之前的那个界面）")
+            map_pos = FindColors.find("1695,982,#7B261E|1702,990,#F2CC71|1716,966,#3B3499|1742,986,#2AD635|1758,996,#E0B956",rect=rc(1384,880,1832,1061),diff=0.8,ori= 1)
             sleep(0.5)
         if map_pos:
-            print("检索到呼噜猫旅店")
+            print("检索到地图")
             c(map_pos,100)
         sleep(3)
         mj_logo_pos = FindColors.find("422,978,#C2B0AF|472,973,#F7F2FA|517,981,#C2AFB4",rect=rc(214,856,746,1070),diff=0.9,ori= 6)
@@ -55,14 +65,14 @@ def start(times):
     
     count = 0
     while count < times:
-        start1()
+        start1(padding)
         count += 1
 
 
 
-def start1():
+def start1(padding):
     time.sleep(2)
-    start = FindColors.find("1467,892,#80D05E|1467,923,#94F06C|1620,893,#80D05E|1619,929,#9EF771",rect=[1242,819,1723,965],diff=0.9)
+    start = FindColors.find("1467,892,#80D05E|1467,923,#94F06C|1620,893,#80D05E|1619,929,#9EF771",rect=rc(1242,819,1723,965),diff=0.9)
     if start:
         print("检索到开始")
         c(start,100)
@@ -79,25 +89,33 @@ def start1():
     aft_g()
 
     sleep(2)
-    # g2 = FindColors.find("377,378,#E8BD6B|358,406,#F3E7CF|397,412,#F3E6CF|375,430,#EEDFC4",rect=[217,290,656,511],diff=0.9,ori= 1)
-    # if g2:
-    #     print("检索到第二关")
-    #     aft_g(g2,2)
-    c(int(width * 0.21),int(height * 0.38))
+    if width >= 2300:
+        c(int(width * 0.25),int(height * 0.38))
+    else:
+        c(int(width * 0.21),int(height * 0.38))
     print("硬点击第二关")
     aft_g()
     
     sleep(2)
-    c(int(width * 0.12),int(height * 0.58))
+    if width >= 2300:
+        c(int(width * 0.17),int(height * 0.58))
+    else:
+        c(int(width * 0.12),int(height * 0.58))
     print("硬点击第三关")
     sleep(2)
     c(int(width * 0.56),int(height * 0.70))
     sleep(5)
 
-    c(int(width * 0.30),int(height * 0.72))
+    if width >= 2300:
+        c(int(width * 0.32),int(height * 0.72))
+    else:
+        c(int(width * 0.30),int(height * 0.72))
     print("硬点击第四关")
     sleep(2)
-    c(int(width * 0.75),int(height * 0.71))
+    if width >= 2300:
+        c(int(width * 0.70),int(height * 0.71))
+    else:
+        c(int(width * 0.75),int(height * 0.71))
     sleep(5)
 
     c(int(width * 0.50),int(height * 0.75))
@@ -110,13 +128,22 @@ def start1():
     aft_g()
 
     sleep(3)
-    c(int(width * 0.85),int(height * 0.52))
+    if width >= 2300:
+        c(int(width * 0.80),int(height * 0.52))
+    else:
+        c(int(width * 0.85),int(height * 0.52))
     print("硬点击第七关")
     sleep(2)
-    c(int(width * 0.75),int(height * 0.71))
+    if width >= 2300:
+        c(int(width * 0.70),int(height * 0.71))
+    else:
+        c(int(width * 0.75),int(height * 0.71))
 
     sleep(5)
-    c(int(width * 0.82),int(height * 0.24),100)
+    if width >= 2300:
+        c(int(width * 0.77),int(height * 0.24),100)
+    else:  
+        c(int(width * 0.82),int(height * 0.24),100)
     print("硬点击第八关")
     sleep(3)
     c(int(width * 0.5),int(height * 0.68),100)
@@ -130,10 +157,13 @@ def start1():
     # c(int(width * 0.92),int(height * 0.10))
     
     sleep(2)
-    c(int(width * 0.91),int(height * 0.61))
+    if width >= 2300:
+        c(int(width * 0.80),int(height * 0.61))
+    else:
+        c(int(width * 0.91),int(height * 0.61))
     print("走过去肉搏")
     sleep(5)
-    c(int(width * 0.55),int(height * 0.33))
+    c(int(width * 0.54),int(height * 0.33))
     print("gan ta!")
     sleep(6)
     c(int(width * 0.7),int(height * 0.68))
@@ -168,26 +198,21 @@ def aft_g():
     sleep(4)
     battle()
 
-    for _ in range(6):
-        # 技能替换提示，检索取消键
-        newlearn = FindColors.find("1468,941,#FDDDA6|1599,947,#FFDFA9",rect=[int(width * 0.58),int(height * 0.80),int(width * 0.71),int(height * 0.94)])
-        if newlearn:
-            print("检索到替换技能")
-            c(newlearn)
-            sleep(2)
-        # 新技能提示，检索当前技能字样
-        newlearn2 = FindColors.find("1371,486,#6C6975|1407,410,#FFFF9B|1429,486,#FFFFFF|1593,489,#6F6B75",rect=[1182,396,1729,568],diff=0.7,ori= 1)
-        if newlearn2:
-            print("检索到新技能")
-            c(int(width * 0.50),int(height * 0.86))
-            sleep(2)
-    
-    c(int(width * 0.6),int(height * 0.70),200)
-    print("点击无视")
     sleep(3)
 
 def battle():
+    jn_list = io.r_skill()
+    
+    if not jn_list:
+        jn_list = ["1","1","1"]
+    print(jn_list)
+    jn1_list = list(map(int,jn_list[0]))
+    jn2_list = list(map(int,jn_list[1]))
+    jn3_list = list(map(int,jn_list[2]))
+
+
     in_battle = True
+    i = 0
     while True:
         huihe = FindColors.find("964,43,#FFFFFF",rect=[int(width * 0.47),int(height * 0.01),int(width * 0.54),int(height * 0.09)])
         battle_win = FindColors.find("1653,215,#FDE87B|1688,214,#FDE87B",rect=[int(width * 0.54),int(height * 0.08),int(width * 0.87),int(height * 0.38)])
@@ -196,30 +221,80 @@ def battle():
             sleep(5)
             c(int(width * 0.30),int(height * 0.91))
             sleep(3)
+        
+        chilun = FindColors.find("1861,56,#132126|1856,40,#FADBAB|1870,40,#F0CF9F|1877,51,#DEB594|1876,71,#222329|1862,75,#423422",rect=rc(1699,11,1911,107),diff=0.9)
+        wushi = FindColors.find("1162,760,#A76F3D|1091,657,#FFF2D8|1242,655,#FFF2D8|1106,753,#F9DFAA|1261,765,#F0D6A6",rect=rc(984,626,1391,840))
+        duiwu = FindColors.find("128,962,#FBAF72|98,938,#F5ECC0|166,941,#F8E69D|160,1004,#E7BE31|109,1043,#FFFFFF|91,998,#DFB630",rect=rc(14,913,389,1065),diff=0.9)
+        if chilun or wushi or duiwu:
+            print("战斗结束")
+            if wushi:
+                c(wushi,100)
             return
 
-        if in_battle:
-            sleep(1)
-            c(int(width * 0.30),int(height * 0.91))
-                
-        
-def test():
-    while not FindColors.find("1848,50,#FDDFAE|1863,56,#17232E|1874,61,#E2B799",rect=[1641,12,1913,108],diff=0.8,ori= 1):
+        huihe = FindColors.find("964,43,#FFFFFF",rect=[int(width * 0.47),int(height * 0.01),int(width * 0.54),int(height * 0.09)])
+        click_return = FindColors.find("795,1035,#FEF1A4|1099,1035,#FFF2A5",rect=rc(725,977,1155,1070),diff=0.95)
+        # sleep(0.5)
+        if not huihe and click_return:
+            in_battle = False
+            print("检索到返回键")
+            action.click(click_return)
+            time.sleep(2)
+
         # 技能替换提示，检索取消键
         newlearn = FindColors.find("1468,941,#FDDDA6|1599,947,#FFDFA9",rect=[int(width * 0.58),int(height * 0.80),int(width * 0.71),int(height * 0.94)])
         if newlearn:
             print("检索到替换技能")
             c(newlearn)
-            sleep(1)
-        # 新技能提示，检索当前技能字样
-        newlearn2 = FindColors.find("1371,486,#6C6975|1407,410,#FFFF9B|1429,486,#FFFFFF|1593,489,#6F6B75",rect=[1182,396,1729,568],diff=0.7,ori= 1)
-        if newlearn2:
-            print("检索到新技能")
-            c(int(width * 0.50),int(height * 0.86))
             sleep(2)
-        else:
-            print("未检索到")
-            sleep(1)
+
+        if in_battle and huihe:
+            if isSkill.isSkill():
+                print("检索到技能")
+                time.sleep(0.5)
+                len_jn2 = len(jn2_list)
+                if i > len_jn2-1:
+                    i = len_jn2-1
+                # if cur_hero == 1:
+                jn_click = jn_click_list[jn2_list[i]-1]
+                action.click(jn_click[0],jn_click[1],100)
+                print(f"点击{jn2_list[i]}号位技能")
+                print(f"当前预设{jn2_list}")
+                print(f"第{i+1}个预设技能")
+                i += 1
+                time.sleep(1)
+
+
+            
+        
+def test():
+    c(int(width * 0.55),int(height * 0.33))
+    print("gan ta!")
+    sleep(6)
+    c(int(width * 0.7),int(height * 0.68))
+    print("爱情无价！")
+    sleep(3)
+    battle()
+    c(int(width * 0.88),int(height * 0.59))
+    print("没事走两步")
+    sleep(3)
+    mf = FindColors.find("1423,301,#2D297D|1464,291,#9C8EBB|1504,297,#9D9AD5|1529,339,#5359C3",rect=rc(1112,130,1732,444),diff=0.9,ori= 1)
+    while not mf:
+        mf = FindColors.find("1423,301,#2D297D|1464,291,#9C8EBB|1504,297,#9D9AD5|1529,339,#5359C3",rect=rc(1112,130,1732,444),diff=0.9,ori= 1)
+    if mf:
+        print("检索到魔方")
+        c(mf,100)
+        sleep(3)
+        c(int(width * 0.5),int(height * 0.9))
+        sleep(3)
+        c(mf,100)
+        print("点击魔方退出副本")
+        sleep(3)
+    c(int(width * 0.50),int(height * 0.62))
+    sleep(5)
+    c(int(width * 0.49),int(height * 0.70))
+    print("确认领取奖励")
+    sleep(1)
+
 
 
    

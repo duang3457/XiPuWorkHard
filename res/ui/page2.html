@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>第二页</title>
+    <style>
+        /* 导航条样式 */
+        nav {
+            background-color: #333;
+            padding: 10px;
+            text-align: center;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            padding: 14px 20px;
+            font-family: Arial, sans-serif;
+            font-size: 18px;
+        }
+
+        .preset-info {
+            font-style: italic;
+            color: #555;
+            margin-bottom: 5px;
+        }
+    </style>
+    <script>
+        // 从 Python 或本地存储获取保存的值并设置到 placeholder
+        function loadPlaceholders() {
+            for (var i = 1; i <= 3; i++) {
+                // 尝试从本地存储读取保存的值
+                var savedValue = window.airscript.get(`input${i}_placeholder`);
+                
+                // 如果本地存储有值则设置为 placeholder, 否则使用默认的提示
+                if (savedValue) {
+                    document.getElementById(`input${i}`).placeholder = savedValue;
+                    document.getElementById(`preset${i}`).innerHTML = `您的当前预设：${savedValue}`;
+                } else {
+                    document.getElementById(`preset${i}`).innerHTML = "您的当前预设：无";
+                }
+            }
+        }
+
+        // 发送页面2的输入数据到Python端，并保存到本地存储
+        function sendPage2ValuesToPython() {
+            var values = {};
+
+            // 遍历每个输入框并提取输入值
+            for (var i = 1; i <= 3; i++) {
+                var inputValue = document.getElementById(`input${i}`).value;
+
+                // 如果输入框不为空，保存到本地存储并更新当前预设
+                if (inputValue) {
+                    values[`input${i}`] = inputValue;  // 记录用户输入的字符串
+
+                    // 保存输入的值到本地
+                    window.airscript.save(`input${i}_placeholder`, inputValue);
+
+                    // 更新当前预设信息
+                    document.getElementById(`preset${i}`).innerHTML = `您的当前预设：${inputValue}`;
+                } else {
+                    // 如果输入框为空，保持现有的本地存储不变，并显示当前预设
+                    var savedValue = window.airscript.get(`input${i}_placeholder`);
+                    if (savedValue) {
+                        values[`input${i}`] = savedValue;
+                        document.getElementById(`preset${i}`).innerHTML = `您的当前预设：${savedValue}`;
+                    } else {
+                        // 如果本地存储也为空，将本地存储设置为1
+                        window.airscript.save(`input${i}_placeholder`, "1");
+                        values[`input${i}`] = "1";
+                        document.getElementById(`preset${i}`).innerHTML = "您的当前预设：1";
+                    }
+                }
+            }
+
+            // 发送JSON数据到Python端
+            window.airscript.call('2', JSON.stringify(values));
+            alert(`Sent to Python and saved locally: ${JSON.stringify(values)}`);
+        }
+
+        // 页面加载时执行
+        window.onload = loadPlaceholders;
+    </script>
+</head>
+<body>
+    <!-- 顶部导航 -->
+    <nav>
+        <a href="a.html">标准页</a> | 
+        <a href="page2.html">技能预设</a>
+    </nav>
+
+    
+
+    <!-- 输入框1 -->
+    <form>
+        <p id="preset1" class="preset-info">您的当前预设：无</p>
+        <label for="input1">天启老虎+猫（最后一个数字无限循环执行）：</label>
+        <input type="text" id="input1" placeholder="输入1-4之间的数代表使用技能的顺序(左到右)：11234">
+    </form>
+
+
+
+    <!-- 输入框2 -->
+    <form>
+        <p id="preset2" class="preset-info">您的当前预设：无</p>
+        <label for="input2">梦境九层</label>
+        <input type="text" id="input2" placeholder="输入1-4之间的数代表使用技能的顺序(左到右)：11234">
+    </form>
+
+ 
+
+    <!-- 输入框3 -->
+    <form>
+        <p id="preset3" class="preset-info">您的当前预设：无</p>
+        <label for="input3">异界入侵</label>
+        <input type="text" id="input3" placeholder="输入1-4之间的数代表使用技能的顺序(左到右)：11234">
+    </form>
+
+
+
+    <!-- 发送按钮 -->
+    <button onclick="sendPage2ValuesToPython()">确认</button>
+
+    <h3>技能预设持久化存在本地，无需每次都预设（输入1-4之间的数字代表1-4号位技能）（5代表大招，无大招时跳过进行下一个技能）（点确定后才会更新）</h3>
+
+</body>
+</html>
